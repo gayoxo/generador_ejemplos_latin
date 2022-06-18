@@ -5,3 +5,4 @@ openpyxl
 pydantic
 uvicorn
 fastapi
+gunicorn

@@ -6,9 +6,9 @@ import random
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+from modules.utils import verbcsv_to_list, csv_to_list
 
 # FastAPI Settings
 app = FastAPI()
@@ -32,58 +32,19 @@ hoja = 'Hoja1'
 df_v = pd.read_excel(path_file_v, sheet_name=hoja)
 df_s = pd.read_excel(path_file_s, sheet_name=hoja)
 
+# ------------------------------------------------------------------------------------------
 # Organizamos la información de la tabla de verbos en listas
-ve = df_v[['VERBOS']].to_string(header=False, index=False)
-verbos = []
-b = ve.split('\n')
-for word in b:
-    word = word.split()
-    if len(word)>1:
-        verbos.append(word[0][:-1])
-    else:
-        verbos.append(word[0])
-# ------------------------------------------------------------------------------------------
-ca1 = df_v[['CASO A1']].to_string(header=False, index=False)
-caso1 = []
-b = ca1.split('\n')
-for word in b:
-    caso1.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-arg1 = df_v[['RASGO A1']].to_string(header=False, index=False)
-argumento1 = []
-b = arg1.split('\n')
-for word in b:
-    argumento1.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-ca2 = df_v[['CASO A2']].to_string(header=False, index=False)
-caso2 = []
-b = ca2.split('\n')
-for word in b:
-    caso2.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-arg2 = df_v[['RASGO A2']].to_string(header=False, index=False)
-argumento2 = []
-b = arg2.split('\n')
-for word in b:
-    argumento2.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-ca3 = df_v[['CASO A3']].to_string(header=False, index=False)
-caso3 = []
-b = ca3.split('\n')
-for word in b:
-    caso3.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-arg3 = df_v[['RASGO A3']].to_string(header=False, index=False)
-argumento3 = []
-b = arg3.split('\n')
-for word in b:
-    argumento3.append(word.lstrip())
-# ------------------------------------------------------------------------------------------
-va = df_v[['VALENCIAS']].to_string(header=False, index=False)
-valencias = []
-b = va.split('\n')
-for word in b:
-    valencias.append(word.lstrip())
+
+verbos = verbcsv_to_list(df_v)
+
+caso1 = csv_to_list('CASO A1', df_v)
+argumento1 = csv_to_list('RASGO A1', df_v)
+caso2 = csv_to_list('CASO A2', df_v)
+argumento2 = csv_to_list('RASGO A2', df_v)
+caso3 = csv_to_list('CASO A3', df_v)
+argumento3 = csv_to_list('RASGO A3', df_v)
+valencias = csv_to_list('VALENCIAS', df_v)
+
 
 
 # Por cada verbo se crea una lista con sus características y se almacena en una lista general
@@ -708,3 +669,7 @@ def main(q:query) -> str:
         return f'{output1} {output2} {verbo_conjugado}'
     else:
         return f'{output1} {output2} {output3} {verbo_conjugado}'
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8420)

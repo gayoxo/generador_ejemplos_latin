@@ -22,12 +22,9 @@ app.add_middleware(
 )
 
 
-
-
 path_file_v = 'data/verbos_modded.xlsx'
 path_file_s = 'data/sustantivos.xlsx'
 hoja = 'Hoja1'
-
 
 df_v = pd.read_excel(path_file_v, sheet_name=hoja)
 df_s = pd.read_excel(path_file_s, sheet_name=hoja)
@@ -100,129 +97,115 @@ df_performance = df_s.loc[df_s['Performance'] == 'y']
 # Creamos las listas de los sustantivos con cierto papel temático
 a = df_A_and_H[['Descripción']].to_string(header=False, index=False)
 A_and_H = []
-A_and_H_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     A_and_H.append(word[0][:-1])
-    A_and_H_esp.append(word[2])
 # ------------------------------------------------------------------------------------------
 a = df_A_not_H[['Descripción']].to_string(header=False, index=False)
 A_not_H = []
-A_not_H_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     A_not_H.append(word[0][:-1])
-    A_not_H_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_D[['Descripción']].to_string(header=False, index=False)
 d = []
-d_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     d.append(word[0][:-1])
-    d_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_l[['Descripción']].to_string(header=False, index=False)
 lu = []
-lu_esp = []
+
 b = a.split('\n')
 for word in b:
     word = word.split()
     lu.append(word[0][:-1])
-    lu_esp.append(word[2])
 # ------------------------------------------------------------------------------------------
 a = df_user[['Descripción']].to_string(header=False, index=False)
 user = []
-user_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     user.append(word[0][:-1])
-    user_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_poseedor[['Descripción']].to_string(header=False, index=False)
 poseedor = []
-poseedor_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     poseedor.append(word[0][:-1])
-    poseedor_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_mover[['Descripción']].to_string(header=False, index=False)
 mover = []
-mover_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     mover.append(word[0][:-1])
-    mover_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_content[['Descripción']].to_string(header=False, index=False)
 content = []
-content_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     content.append(word[0][:-1])
-    content_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_implement[['Descripción']].to_string(header=False, index=False)
 implement = []
-implement_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     implement.append(word[0][:-1])
-    implement_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_posesion[['Descripción']].to_string(header=False, index=False)
 posesion = []
-posesion_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     posesion.append(word[0][:-1])
-    posesion_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_judgment[['Descripción']].to_string(header=False, index=False)
 judgment = []
-judgment_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     judgment.append(word[0][:-1])
-    judgment_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_situacion[['Descripción']].to_string(header=False, index=False)
 situacion = []
-situacion_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     situacion.append(word[0][:-1])
-    situacion_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_emocion[['Descripción']].to_string(header=False, index=False)
 emocion = []
-emocion_esp = []
 b = a.split('\n')
 for word in b:
     word = word.split()
     emocion.append(word[0][:-1])
-    emocion_esp.append(word[2])
+
 # ------------------------------------------------------------------------------------------
 a = df_performance[['Descripción']].to_string(header=False, index=False)
 performance = []
-performance_esp = []
+
 b = a.split('\n')
 for word in b:
     word = word.split()
     performance.append(word[0][:-1])
-    performance_esp.append(word[2])
+
 
 
 # Creamos el resto de listas con los papeles temáticos

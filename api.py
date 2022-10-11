@@ -6,7 +6,7 @@ import random
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 
@@ -115,7 +115,7 @@ for i, v in enumerate(verbos):
     datos_verbales_list.append(
         [v, super_caso1, super_argumento1, super_caso2, super_argumento2, super_caso3, super_argumento3, super_valencias])
 
-# --- REFACTOR LLEGA HASTA AQUÍ --- #
+
 
 # Creamos los dataframes según la caracterización léxica
 df_A_and_H = df_s.loc[df_s['Caracterización Léxica'] == '+animado +humano']
@@ -568,15 +568,9 @@ def eleccion_verbal_arg3(arg_v3, lista_papeles, li_verbos):
 class query(BaseModel):
     query: str
 
-@app.get("/app")
-def root():
-    """
-    Main method of the program, call the front service and allows user to interact using it.
-    """
-    return FileResponse("gene.html")
 
 @app.post("/gen")
-def main(q:query):
+def main(q:query) -> str:
     # Por último pedimos al usuario que introduzca un verbo
     selec = q.query
 
@@ -714,252 +708,3 @@ def main(q:query):
         return f'{output1} {output2} {verbo_conjugado}'
     else:
         return f'{output1} {output2} {output3} {verbo_conjugado}'
-
-
-class declinador_query(BaseModel):
-    palabra:str
-    declinacion:int
-    genero:str
-    numero:str
-    caso:str
-
-@app.post("/declinador")
-def declinador(p:declinador_query)->str:
-
-    palabra = p.palabra
-    declinacion = p.declinacion
-    genero = p.genero
-    numero = p.numero
-    caso = p.caso  
-    sing = False
-    plur = False
-    
-    
-    if numero == 's':
-        sing = True
-    elif numero == 'p':
-        plur = True
-        
-    if declinacion == 1:
-        palabra = palabra[:-1]
-        out = primera_decl(palabra, caso, sing, plur)
-      
-    elif declinacion == 2:
-        palabra = palabra[:-2]
-        if genero == 'fem':
-            out = segunda_decl_fem(palabra, caso, sing, plur)
-        elif genero == 'neu':
-            out = segunda_decl_neu(palabra, caso, sing, plur)
-    elif declinacion == 3:
-        palabra = palabra[:-2]
-        if genero == 'fem':
-            out = tercera_decl_fem(palabra, caso, sing, plur)
-        elif genero == 'neu':
-            out = tercera_decl_neu(palabra, caso, sing, plur)
-            
-    return out
-
-def primera_decl(palabra, caso, sing, plur):
-    
-    if caso == 'Nom':
-        if sing:
-            out = f'{palabra}a'
-        elif plur:
-            out = f'{palabra}ae'
-            
-    elif caso == 'Voc':
-        if sing:
-            out = f'{palabra}a'
-        elif plur:
-            out = f'{palabra}ae'
-            
-    elif caso == 'Acu':
-        if sing:
-            out = f'{palabra}am'
-        elif plur:
-            out = f'{palabra}as'
-            
-    elif caso == 'Gen':
-        if sing:
-            out = f'{palabra}ae'
-        elif plur:
-            out = f'{palabra}arum'
-            
-    elif caso == 'Dat':
-        if sing:
-            out = f'{palabra}ae'
-        elif plur:
-            out = f'{palabra}is'
-        
-    elif caso == 'Abl':
-        if sing:
-            out = f'{palabra}a'
-        elif plur:
-            out = f'{palabra}is'
-    
-    return out
-
-def segunda_decl_fem(palabra, caso, sing, plur):
-    
-    if caso == 'Nom':
-        if sing:
-            out = f'{palabra}us'
-        elif plur:
-            out = f'{palabra}i'
-            
-    elif caso == 'Voc':
-        if sing:
-            out = f'{palabra}e'
-        elif plur:
-            out = f'{palabra}i'
-            
-    elif caso == 'Acu':
-        if sing:
-            out = f'{palabra}um'
-        elif plur:
-            out = f'{palabra}os'
-            
-    elif caso == 'Gen':
-        if sing:
-            out = f'{palabra}i'
-        elif plur:
-            out = f'{palabra}orum'
-            
-    elif caso == 'Dat':
-        if sing:
-            out = f'{palabra}o'
-        elif plur:
-            out = f'{palabra}is'
-        
-    elif caso == 'Abl':
-        if sing:
-            out = f'{palabra}o'
-        elif plur:
-            out = f'{palabra}is'
-    
-    return out
-
-def segunda_decl_neu(palabra, caso, sing, plur):
-    
-    if caso == 'Nom':
-        if sing:
-            out = f'{palabra}um'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Voc':
-        if sing:
-            out = f'{palabra}um'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Acu':
-        if sing:
-            out = f'{palabra}um'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Gen':
-        if sing:
-            out = f'{palabra}i'
-        elif plur:
-            out = f'{palabra}orum'
-            
-    elif caso == 'Dat':
-        if sing:
-            out = f'{palabra}o'
-        elif plur:
-            out = f'{palabra}is'
-        
-    elif caso == 'Abl':
-        if sing:
-            out = f'{palabra}o'
-        elif plur:
-            out = f'{palabra}is'
-    
-    return out
-
-def tercera_decl_fem(palabra, caso, sing, plur):
-    
-    if caso == 'Nom':
-        if sing:
-            out = f'homo'
-        elif plur:
-            out = f'{palabra}es'
-            
-    elif caso == 'Voc':
-        if sing:
-            out = f'homo'
-        elif plur:
-            out = f'{palabra}es'
-            
-    elif caso == 'Acu':
-        if sing:
-            out = f'{palabra}em'
-        elif plur:
-            out = f'{palabra}es'
-            
-    elif caso == 'Gen':
-        if sing:
-            out = f'{palabra}is'
-        elif plur:
-            out = f'{palabra}um'
-            
-    elif caso == 'Dat':
-        if sing:
-            out = f'{palabra}i'
-        elif plur:
-            out = f'{palabra}ibus'
-        
-    elif caso == 'Abl':
-        if sing:
-            out = f'{palabra}e'
-        elif plur:
-            out = f'{palabra}ibus'
-    
-    return out
-
-def tercera_decl_neu(palabra, caso, sing, plur):
-    
-    if caso == 'Nom':
-        if sing:
-            out = f'corpus'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Voc':
-        if sing:
-            out = f'corpus'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Acu':
-        if sing:
-            out = f'corpus'
-        elif plur:
-            out = f'{palabra}a'
-            
-    elif caso == 'Gen':
-        if sing:
-            out = f'{palabra}is'
-        elif plur:
-            out = f'{palabra}um'
-            
-    elif caso == 'Dat':
-        if sing:
-            out = f'{palabra}i'
-        elif plur:
-            out = f'{palabra}ibus'
-        
-    elif caso == 'Abl':
-        if sing:
-            out = f'{palabra}e'
-        elif plur:
-            out = f'{palabra}ibus'
-    
-    return out
-
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8420)

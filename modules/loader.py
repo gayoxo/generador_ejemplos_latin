@@ -1,7 +1,5 @@
-from msilib.schema import Verb
 import pandas as pd
 from environment import DATA_DIR
-from models import Verb_data
 from utils import get_all_verb_data, instanciate_verb
 
 # ToDo: Cargar los literales como config
